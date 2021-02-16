@@ -109,3 +109,23 @@ body {
 #popup {
     font-size: 2rem;
 }
+
+#hours ,#mins {
+    font-size: 2rem;
+    height: 6rem;
+}
+
+.day {
+    background-color: gainsboro;
+    height: 5rem;
+    width: 5rem;
+    border: none;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0.5rem;
+    transition: transform .2s;
+}
+
+.day:hover {
+    transform: scale(1.2);
+}

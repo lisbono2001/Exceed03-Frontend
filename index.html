@@ -29,36 +29,53 @@
                     <div class="col-md" id="sentText">
                         <form class="center" action="" id="formText">
                             <div class="form-group">
-                                <!--- <label for="#" id="message-label">Sent a message</label> -->
                                 <input type="text" class="form-control" id="message" placeholder="TEXT">
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-md" id="colbut">
-                                    <button type="submit" class="btn btn-success" id="submit-message">Sent</button>
+                                    <button type="submit" class="btn btn-success" onclick="alert()" id="submit-message">Sent</button>
                                 </div>
                                 <div class="col-md" id="colbut">
-                                    <button type="button" class="btn btn-info" id="set-time" data-toggle="modal" data-target="#popup">Set time</button>
+                                    <button type="button" class="btn btn-info" id="set-time" onclick="setTime()"; data-toggle="modal" data-target="#popup">Set time</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal fade" id="popup" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title" id="exampleModalLongTitle">Set time Message</h1>
+                        <h1 class="modal-title" id="modal-title">Message: </h1>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="form-group">
+                            <label for="#" id="message-label"> Time :</label>
+                            <input type="number" min="0" class="form-control" id="hours" placeholder="Hours (24)">
+                            <input type="number" min="0" class="form-control" id="mins" placeholder="Mins">
+                        </div>
+                        <div class="row justify-content-center">
+                            <button class="day" id="Sun" onclick="selectDay(value)" value="Sun">Sun</button>
+                            <button class="day" id="Mon" onclick="selectDay(value)" value="Mon">Mon</button>
+                            <button class="day" id="Tue" onclick="selectDay(value)" value="Tue">Tue</button>
+                            <button class="day" id="Wed" onclick="selectDay(value)" value="Wed">Wed</button>
+                            <button class="day" id="Thu" onclick="selectDay(value)" value="Thu">Thu</button>
+                            <button class="day" id="Fri" onclick="selectDay(value)" value="Fri">Fri</button>
+                            <button class="day" id="Sat" onclick="selectDay(value)" value="Sat">Sat</button>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md" id="colbut">
+                                <button type="button" class="btn btn-success" id="set-time" data-toggle="modal" data-target="#popup">Save</button>
+                            </div>
+                            <div class="col-md" id="colbut">
+                                <button type="submit" class="btn btn-secondary" data-dismiss="modal" id="submit-message">Close</button>
+                            </div>
+                        </div>
                         
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><h1>Close<h1></button>
-                        <button type="button" class="btn btn-primary"><h1>Save</h1></button>
                     </div>
                     </div>
                 </div>
