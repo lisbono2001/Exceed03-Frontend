@@ -25,11 +25,9 @@ body {
     transform: translate(-50%, -50%);
 }
 
-#firstpatient {
+#patient {
     margin: 1rem;
-}
-
-#firstrow ,#secondrow {
+    padding: 1rem;
     width: 85%;
     margin: auto;
 }
@@ -110,7 +108,9 @@ body {
     font-size: 2rem;
 }
 
-#hours ,#mins {
+.time {
+    display: block;
+    padding: 1rem;
     font-size: 2rem;
     height: 6rem;
 }
@@ -119,11 +119,22 @@ body {
     background-color: gainsboro;
     height: 5rem;
     width: 5rem;
-    border: none;
+    border: 0;
     border-radius: 50%;
     display: inline-block;
     margin: 0.5rem;
     transition: transform .2s;
+}
+
+#add-form ,#reduce-form {
+    background-color: rgb(255, 217, 113);
+    text-align: center;
+    padding: 0.5rem;
+    height: 4rem;
+    width: 4rem;
+    font-size: 2rem;
+    border: 0;
+    border-radius: 50%;
 }
 
 .day:hover {
