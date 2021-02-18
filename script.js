@@ -142,7 +142,7 @@ function selectDay(day) {
 
 // -------  POST request to DB  -------
 
-var MongoClient = require('mongodb').MongoClient;
+// var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:5500/";
 
 //sameple post
@@ -161,7 +161,8 @@ function inset(jsonData) {
 
 //sent message to patient
 function sentMessage() {
-
+    console.log("Message sent!!")
+    document.getElementById("submit-message").innerHTML = "Sent!!";
 }
 
 //save message day(s) and time(s) from form
@@ -169,5 +170,7 @@ function saveMessage() {
 
 }
 
+
+document.getElementById("submit-message").addEventListener("submit", sentMessage);
 
 setInterval(()=> update(),1000);
