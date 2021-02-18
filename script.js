@@ -161,7 +161,7 @@ function inset(jsonData) {
 
 //sent message to patient
 function sentMessage() {
-    console.log("Message sent!!")
+    console.log("Message sent!!");
     document.getElementById("submit-message").innerHTML = "Sent!!";
 }
 
@@ -171,6 +171,6 @@ function saveMessage() {
 }
 
 
-document.getElementById("submit-message").addEventListener("submit", sentMessage);
+document.getElementById("sent-message").addEventListener("click", sentMessage);
 
 setInterval(()=> update(),1000);
