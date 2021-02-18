@@ -55,13 +55,18 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <label for="#" id="message-label"> Time:</label>
                     <div class="form-group" id="form-group">
-                        <label for="#" id="message-label"> Time:</label>
-                        <input type="number" min="0" class="form-control time" id="hours1" placeholder="Hours (24)">
-                        <input type="number" min="0" class="form-control time" id="mins1" placeholder="Mins">
+                        <div id="form1">
+                            <input type="text" required minlength="1" maxlength="2" size="10"  id="hours" placeholder="Hours (24)">
+                            :
+                            <input type="text" required minlength="1" maxlength="2" size="10"  id="mins" placeholder="Mins">
+                        </div>
                     </div>
                     <button onclick="reduceForm()" id="reduce-form">-</button>
                     <button onclick="addForm()" id="add-form">+</button>
+
+                    <div class="row justify-content-center" id="error-message">Wrong time input</div>
                     <div class="row justify-content-center">
                         <button class="day" id="Sun" onclick="selectDay(value)" value="Sun">Sun</button>
                         <button class="day" id="Mon" onclick="selectDay(value)" value="Mon">Mon</button>
@@ -73,7 +78,7 @@
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-md" id="colbut">
-                            <button type="button" class="btn btn-success" id="set-time" data-toggle="" data-target="#popup">Save</button>
+                            <button type="button" class="btn btn-success" id="save-message" onclick="saveMessage()" data-toggle="" data-target="#popup">Save</button>
                         </div>
                         <div class="col-md" id="colbut">
                             <button type="submit" class="btn btn-secondary" data-dismiss="modal" id="submit-message">Close</button>

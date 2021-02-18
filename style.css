@@ -92,11 +92,18 @@ body {
     height: 6rem;
 }
 
+#hours ,#mins {
+    display: block;
+    padding: 1rem;
+    font-size: 2rem;
+    height: 6rem;
+}
+
 #colbut {
     padding: 0.1rem;
 }
 
-#submit-message, #set-time {
+#submit-message, #save-message ,#set-time {
     display: block;
     margin: auto;
     font-size: 2.5rem;
@@ -108,11 +115,11 @@ body {
     font-size: 2rem;
 }
 
-.time {
-    display: block;
+#hours, #mins {
+    display: inline-block;
     padding: 1rem;
     font-size: 2rem;
-    height: 6rem;
+    height: 5rem;
 }
 
 .day {
