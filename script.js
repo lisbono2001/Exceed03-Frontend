@@ -8,6 +8,7 @@ function update() {
         console.log(json);
             //addPatients(name, age, address);
             //updateStatus(name,status);
+            console.error("ok");
     })
     .catch((error) => {
         console.error(error);
@@ -56,6 +57,19 @@ function updateStatus(name,status) {
     }
 }
 
+
+function checkEmpty(){
+    var value = document.getElementById('message').value;
+    if (value.length > 0) {
+        document.getElementById('submit-message').disabled = false; 
+        document.getElementById('set-time').disabled = false; 
+    } 
+    else { 
+        document.getElementById('submit-message').disabled = true;
+        document.getElementById('set-time').disabled = true; 
+    }
+}
+
 //change specific patient background color to danger color
 function alertScreen(patientid) {
     window.setInterval(()=>{
@@ -72,22 +86,7 @@ var formCounted = 1;
 //clear data from dayArray and re-color day buttons.
 function setTime() {
     var message = document.getElementById("message").value;
-    if (message!="") {
-        document.getElementById("modal-title").innerHTML = "Message: " + message;
-        document.getElementById("modal-title").style.color = "black";
-        //enable buttons;
-        document.getElementById("save-message").disabled = false;
-        document.getElementById("add-form").disabled = false;
-        document.getElementById("reduce-form").disabled = false;
-    }
-    else {
-        document.getElementById("modal-title").innerHTML = "Type something first";
-        document.getElementById("modal-title").style.color = "red";
-        //disable sbuttons;
-        document.getElementById("save-message").disabled = true;
-        document.getElementById("add-form").disabled = true;
-        document.getElementById("reduce-form").disabled = true;
-    }
+    document.getElementById("modal-title").innerHTML = "Message: " + message;
     //clear select day color and clear day array
     dayArray = [];
     for (var i=0; i<dayArray.length; i++) {
@@ -148,8 +147,8 @@ function selectDay(day) {
 
 // -------  POST request to DB  -------
 
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:5500/";
+// var MongoClient = require('mongodb').MongoClient;
+// var url = "mongodb://localhost:5500/";
 
 //sameple post
 function inset(jsonData) {
@@ -172,6 +171,7 @@ function sentMessage() {
 
 //save message day(s) and time(s) from form
 function saveMessage() {
+    var message = document.getElementById("message").value;
     var data = {}
     for (var i=1; i<=formCounted ;i++) {
         //get string values
@@ -187,5 +187,4 @@ function saveMessage() {
     }
 }
 
-
-setInterval(()=> update(),1000);
+// var myVar = setInterval(checkMessage(),10000);

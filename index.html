@@ -29,14 +29,14 @@
                     <div class="col-md" id="sentText">
                         <form class="center" action="" id="formText">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="message" placeholder="TEXT">
+                                <input type="text" class="form-control" id="message" placeholder="TEXT" onkeyup="checkEmpty()">
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-md" id="colbut">
-                                    <button type="submit" class="btn btn-success" onclick="" id="submit-message">Sent</button>
+                                    <button type="button" class="btn btn-success" onclick="" id="submit-message" disabled>Sent</button>
                                 </div>
                                 <div class="col-md" id="colbut">
-                                    <button type="button" class="btn btn-info" id="set-time" onclick="setTime()"; data-toggle="modal" data-target="#popup">Set time</button>
+                                    <button type="button" class="btn btn-info" id="set-time" onclick="setTime()"; data-toggle="modal" data-target="#popup" disabled>Set time</button>
                                 </div>
                             </div>
                         </form>
