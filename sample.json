@@ -28,35 +28,4 @@
             }
         ]}
     ]
-},
-{
-    "name": "alex",
-    "age": 59,
-    "address": "32/21 foo bar 10030",
-    "status": "fine",
-    "gas_sensor": 23,
-    "last_update_timestamp": 111101000,
-    "live_message": {
-        "message": "take a medicine",
-        "response": true
-    },
-    "schedule_message": [
-        {"has_response": false},
-        {"message": "take medicine"},
-        {"schedule": [
-            {
-                "date": "Mon",
-                "time": ["12:30", "17:00"]
-            }
-        ]},
-        {"responses": [
-            {
-                "response": true,
-                "timestamp": 111111032
-            }, {
-               "response": true,
-                "timestamp": 114311032
-            }
-        ]}
-    ]
 }
