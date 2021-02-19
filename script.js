@@ -88,14 +88,10 @@ function setTime() {
     var message = document.getElementById("message").value;
     document.getElementById("modal-title").innerHTML = "Message: " + message;
     //clear select day color and clear day array
-    dayArray = [];
     for (var i=0; i<dayArray.length; i++) {
         document.getElementById(dayArray[i]).style.backgroundColor = "gainsboro";
     }
-    initSetTimeForm();
-
-    //hide error message until error occured
-    document.getElementById('error-message').style.display = "none";
+    dayArray = [];
 }
 
 //clear and recreate time form
@@ -134,7 +130,6 @@ function addSetTimeForm() {
 
 //add clicked day to day Array and re-color the clicked button.
 function selectDay() {
-    console.log(this);
     if (!dayArray.includes(this.value)) {
         dayArray.push(this.value);
         this.style.backgroundColor = "lightcoral";
@@ -181,6 +176,7 @@ function saveMessage() {
 
 document.getElementById("message").addEventListener("keyup", checkEmptyMessage);
 document.getElementById("set-time").addEventListener("click", setTime);
+document.getElementById("set-time").addEventListener("click", initSetTimeForm);
 document.getElementById("reduce-form").addEventListener("click", reduceSetTimeForm);
 document.getElementById("add-form").addEventListener("click", addSetTimeForm);
 Array.from(document.getElementsByClassName('day')).forEach(function(element){

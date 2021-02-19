@@ -92,6 +92,10 @@ body {
     height: 6rem;
 }
 
+#error-message {
+    display: none;
+}
+
 #hours ,#mins {
     display: block;
     padding: 1rem;
