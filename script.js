@@ -8,6 +8,7 @@ function update() {
         console.log(json);
             //addPatients(name, age, address);
             //updateStatus(name,status);
+            console.error("ok");
     })
     .catch((error) => {
         console.error(error);
@@ -56,6 +57,19 @@ function updateStatus(name,status) {
     }
 }
 
+
+function checkEmpty(){
+    var value = document.getElementById('message').value;
+    if (value.length > 0) {
+        document.getElementById('submit-message').disabled = false; 
+        document.getElementById('set-time').disabled = false; 
+    } 
+    else { 
+        document.getElementById('submit-message').disabled = true;
+        document.getElementById('set-time').disabled = true; 
+    }
+}
+
 //change specific patient background color to danger color
 function alertScreen(patientid) {
     window.setInterval(()=>{
@@ -72,59 +86,50 @@ var formCounted = 1;
 //clear data from dayArray and re-color day buttons.
 function setTime() {
     var message = document.getElementById("message").value;
-    if (message!="")
-        document.getElementById("modal-title").innerHTML = "Message: " + message;
-    else
-        document.getElementById("modal-title").innerHTML = "Type something first";
+    document.getElementById("modal-title").innerHTML = "Message: " + message;
+    //clear select day color and clear day array
+    dayArray = [];
     for (var i=0; i<dayArray.length; i++) {
         document.getElementById(dayArray[i]).style.backgroundColor = "gainsboro";
     }
-    dayArray = [];
     initForm();
+
+    //hide error message until error occured
+    document.getElementById('error-message').style.display = "none";
 }
 
 //clear and recreate time form
 function initForm() {
-    formCounted = 0;
     var container = document.getElementById("form-group");
-    //clear until empty
-    while (container.hasChildNodes()) {
+    //clear until left only form starter template
+    while (formCounted > 1) {
         container.removeChild(container.lastChild);
+        formCounted--;
     }
-    addForm();
 }
 
 ////decrease number of time form in set time
 function reduceForm() {
+    var container = document.querySelector('#form-group');
     if (formCounted > 1) {
+        container.removeChild(container.lastElementChild);
         formCounted--;
-        var container = document.getElementById("form-group");
-        container.removeChild(container.lastChild);
-        container.removeChild(container.lastChild);
     }
     else;
 }
 
 //increase number of time form in set time
 function addForm() {
-    formCounted++;
-    var container = document.getElementById("form-group");
+    //given maximun form === 5
+    if (formCounted < 5) {
+        formCounted++;
+        var form = document.querySelector('#form-group').lastElementChild;
+        var clone = form.cloneNode(true);
 
-    var input = document.createElement("input");
-    input.type = "number";
-    input.className = "form-control" + "time";
-    input.min = "0";
-    input.id = "hours"+formCounted;
-    input.placeholder = "Hours (24)";
-    container.appendChild(input);
-
-    var input = document.createElement("input");
-    input.type = "number";
-    input.className = "form-control" + "time";
-    input.min = "0";
-    input.id = "mins"+formCounted;
-    input.placeholder = "Mins";
-    container.appendChild(input);
+        clone.id = 'form'+formCounted;
+        form.after(clone);
+    }
+    else;
 }
 
 //add clicked day to day Array and re-color the clicked button.
@@ -142,8 +147,8 @@ function selectDay(day) {
 
 // -------  POST request to DB  -------
 
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:5500/";
+// var MongoClient = require('mongodb').MongoClient;
+// var url = "mongodb://localhost:5500/";
 
 //sameple post
 function inset(jsonData) {
@@ -166,8 +171,20 @@ function sentMessage() {
 
 //save message day(s) and time(s) from form
 function saveMessage() {
-
+    var message = document.getElementById("message").value;
+    var data = {}
+    for (var i=1; i<=formCounted ;i++) {
+        //get string values
+        try {
+            var hours = parseInt(document.getElementById('hours'+i).value);
+            var mins =  parseInt(document.getElementById('mins'+i).value);
+            document.getElementById('error-message').style.display = "block";
+            document.getElementById('error-message').innerHTML = hours+mins;
+        }
+        catch(err) {
+            document.getElementById('error-message').style.display = "block";
+        }
+    }
 }
 
-
-setInterval(()=> update(),1000);
+// var myVar = setInterval(checkMessage(),10000);
