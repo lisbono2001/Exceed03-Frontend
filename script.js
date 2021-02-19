@@ -58,14 +58,14 @@ function updateStatus(name,status) {
 }
 
 
-function checkEmpty(){
+function checkEmptyMessage(){
     var value = document.getElementById('message').value;
     if (value.length > 0) {
-        document.getElementById('submit-message').disabled = false; 
+        document.getElementById('sent-message').disabled = false; 
         document.getElementById('set-time').disabled = false; 
     } 
     else { 
-        document.getElementById('submit-message').disabled = true;
+        document.getElementById('sent-message').disabled = true;
         document.getElementById('set-time').disabled = true; 
     }
 }
@@ -92,14 +92,14 @@ function setTime() {
     for (var i=0; i<dayArray.length; i++) {
         document.getElementById(dayArray[i]).style.backgroundColor = "gainsboro";
     }
-    initForm();
+    initSetTimeForm();
 
     //hide error message until error occured
     document.getElementById('error-message').style.display = "none";
 }
 
 //clear and recreate time form
-function initForm() {
+function initSetTimeForm() {
     var container = document.getElementById("form-group");
     //clear until left only form starter template
     while (formCounted > 1) {
@@ -109,7 +109,7 @@ function initForm() {
 }
 
 ////decrease number of time form in set time
-function reduceForm() {
+function reduceSetTimeForm() {
     var container = document.querySelector('#form-group');
     if (formCounted > 1) {
         container.removeChild(container.lastElementChild);
@@ -119,7 +119,7 @@ function reduceForm() {
 }
 
 //increase number of time form in set time
-function addForm() {
+function addSetTimeForm() {
     //given maximun form === 5
     if (formCounted < 5) {
         formCounted++;
@@ -133,15 +133,15 @@ function addForm() {
 }
 
 //add clicked day to day Array and re-color the clicked button.
-function selectDay(day) {
-    if (!dayArray.includes(day)) {
-        dayArray.push(day);
-        document.getElementById(day).style.backgroundColor = "lightcoral";
+function selectDay() {
+    console.log(this);
+    if (!dayArray.includes(this.value)) {
+        dayArray.push(this.value);
+        this.style.backgroundColor = "lightcoral";
     }
     else {
-        i = dayArray.indexOf(day);
-        dayArray.splice(i,1);
-        document.getElementById(day).style.backgroundColor = "gainsboro";
+        dayArray.splice(dayArray.indexOf(this.value),1);
+        this.style.backgroundColor = "gainsboro";
     }
 }
 
@@ -177,6 +177,15 @@ function saveMessage() {
 }
 
 
+//EventListeners
+
+document.getElementById("message").addEventListener("keyup", checkEmptyMessage);
+document.getElementById("set-time").addEventListener("click", setTime);
+document.getElementById("reduce-form").addEventListener("click", reduceSetTimeForm);
+document.getElementById("add-form").addEventListener("click", addSetTimeForm);
+Array.from(document.getElementsByClassName('day')).forEach(function(element){
+  element.addEventListener("click", selectDay);
+});
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
 
