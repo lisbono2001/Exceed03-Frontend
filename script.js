@@ -161,8 +161,8 @@ function inset(jsonData) {
 
 //sent message to patient
 function sentMessage() {
-    console.log("Message sent!!");
-    // document.getElementById("sent-message").innerHTML = "Sent!!";
+    message = document.getElementById("message").value;
+    console.log(message);
 }
 
 //save message day(s) and time(s) from form
