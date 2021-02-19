@@ -167,10 +167,12 @@ function sentMessage() {
 
 //save message day(s) and time(s) from form
 function saveMessage() {
-
+    console.log("Save the day!!")
+    console.log(dayArray);
 }
 
 
 document.getElementById("sent-message").addEventListener("click", sentMessage);
+document.getElementById("save-time").addEventListener("click", saveMessage);
 
-setInterval(()=> update(),1000);
+// setInterval(()=> update(),1000);
