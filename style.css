@@ -103,7 +103,7 @@ body {
     padding: 0.1rem;
 }
 
-#submit-message, #save-message ,#set-time {
+#submit-message, #set-time, #save-time, #sent-message {
     display: block;
     margin: auto;
     font-size: 2.5rem;

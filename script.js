@@ -148,7 +148,7 @@ function selectDay(day) {
 // -------  POST request to DB  -------
 
 // var MongoClient = require('mongodb').MongoClient;
-// var url = "mongodb://localhost:5500/";
+var url = "mongodb://localhost:5500/";
 
 //sameple post
 function inset(jsonData) {
@@ -166,25 +166,18 @@ function inset(jsonData) {
 
 //sent message to patient
 function sentMessage() {
-
+    console.log("Message sent!!");
+    // document.getElementById("sent-message").innerHTML = "Sent!!";
 }
 
 //save message day(s) and time(s) from form
 function saveMessage() {
-    var message = document.getElementById("message").value;
-    var data = {}
-    for (var i=1; i<=formCounted ;i++) {
-        //get string values
-        try {
-            var hours = parseInt(document.getElementById('hours'+i).value);
-            var mins =  parseInt(document.getElementById('mins'+i).value);
-            document.getElementById('error-message').style.display = "block";
-            document.getElementById('error-message').innerHTML = hours+mins;
-        }
-        catch(err) {
-            document.getElementById('error-message').style.display = "block";
-        }
-    }
+    console.log("Save the day!!")
+    console.log(dayArray);
 }
 
-// var myVar = setInterval(checkMessage(),10000);
+
+document.getElementById("sent-message").addEventListener("click", sentMessage);
+document.getElementById("save-time").addEventListener("click", saveMessage);
+
+// setInterval(()=> update(),1000);
