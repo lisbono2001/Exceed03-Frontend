@@ -1,14 +1,42 @@
-function update() {
-    const fetch = require("node-fetch");
+function updateTotalPatient() {
     fetch("#")
     .then((response) => {
         return response.json();
     })
     .then((json) => {
-        console.log(json);
-            //addPatients(name, age, address);
-            //updateStatus(name,status);
-            console.error("ok");
+        // console.log(json);
+        for (var patient in json) {
+            addPatients(patient['name'], patient['age'], patient['address']);
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+}
+
+function updatePatientStatus() {
+    fetch("#")
+    .then((response) => {
+        return response.json();
+    })
+    .then((json) => {
+        for (var patient in json) {
+            updateStatus(patient['name'], patient['status']);
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+}
+
+// use when called only
+function updatePatientMessageLog() {
+    fetch("#")
+    .then((response) => {
+        return response.json();
+    })
+    .then((json) => {
+        
     })
     .catch((error) => {
         console.error(error);
@@ -42,22 +70,22 @@ function addPatients(name, age, address) {
 //loop update status from first to last patient
 function updateStatus(name,status) {
     for (var i=1; i<=patientCount; i++) {
-        var patient = document.querySelector('#patient'+patientCount);
-        patient.getElementsByClassName("name")[0].textContent === name;
+        if (document.getElementById('patient'+i).value === "Name: " + name) {
             if (status==="online") {
-                patient.getElementsByClassName("status-ligjht")[0].style.backgroundColor = "green";
+                patient.getElementsByClassName("status-light")[0].style.backgroundColor = "green";
             }
             else if (status==="idle") {
-                patient.getElementsByClassName("status-ligjht")[0].style.backgroundColor = "orange";
+                patient.getElementsByClassName("status-light")[0].style.backgroundColor = "orange";
             }
             else if (status==="danger") {
-                patient.getElementsByClassName("status-ligjht")[0].style.backgroundColor = "red";
-                alertScreen(patient.id)
+                patient.getElementsByClassName("status-light")[0].style.backgroundColor = "red";
+                alertScreen(patient.id);
             }
+        }
     }
 }
 
-
+//if text messsage is empty, disable send and settime button
 function checkEmptyMessage(){
     var value = document.getElementById('message').value;
     if (value.length > 0) {
@@ -73,10 +101,10 @@ function checkEmptyMessage(){
 //change specific patient background color to danger color
 function alertScreen(patientid) {
     window.setInterval(()=>{
-        if (document.getElementById("patientid").style.backgroundColor === "blue")
-            document.getElementById("patientid").style.backgroundColor = "red";
+        if (document.getElementById(patientid).style.backgroundColor === "blue")
+            document.getElementById(patientid).style.backgroundColor = "red";
         else
-            document.getElementById("patientid").style.backgroundColor = "blue";
+            document.getElementById(patientid).style.backgroundColor = "blue";
     },3000);
 }
 
@@ -185,4 +213,5 @@ Array.from(document.getElementsByClassName('day')).forEach(function(element){
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
 
-// setInterval(()=> update(),1000);
+// setInterval(()=> updateTotalPatient(),5000);
+// setInterval(()=> updatePatientStatus(),1000);
