@@ -92,6 +92,10 @@ body {
     height: 6rem;
 }
 
+#error-message {
+    display: none;
+}
+
 #hours ,#mins {
     display: block;
     padding: 1rem;
@@ -103,7 +107,7 @@ body {
     padding: 0.1rem;
 }
 
-#submit-message, #set-time, #save-time, #sent-message {
+#set-time, #save-time, #sent-message, #close-popup {
     display: block;
     margin: auto;
     font-size: 2.5rem;
