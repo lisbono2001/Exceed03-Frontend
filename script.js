@@ -228,6 +228,18 @@ function sentMessage() {
     }
     document.getElementById("message").value = '';
     console.log(message);
+
+    url = "http://158.108.182.3:3000/new_msg?user_id=1"
+
+    fetch(url, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            message: message,
+            type: "live"
+        })
+    }).then((response) => console.log(response))
+    .then((result) => console.log(result));
 }
 
 //save message day(s) and time(s) from form
@@ -288,12 +300,9 @@ function formatTime() {
 
 function showHistory() {
     var historyList = document.getElementById("history-container");
+    historyList.innerHTML = "";
     // console.log(historyList);
-    for (i=0; i<35; i++) {  // for loop append all history.
-        var li = document.createElement("div");
-        li.appendChild(document.createTextNode("History of everything"));
-        historyList.appendChild(li);
-    }
+    
     $('#history').modal("show");
 }
 
@@ -303,6 +312,7 @@ function showSchedule() {
     // console.log(sch_list.length);
 
     var historyList = document.getElementById("schedule-container");
+    historyList.innerHTML = "";
     var all_schedules = document.createElement("ul");
 
     fetch(url, {
@@ -318,8 +328,13 @@ function showSchedule() {
             if (data.type == "schedule") {
                 var sch = document.createElement("li");
                 const event = new Date(2000, 1, 1, data.hour, data.minute);
-                console.log(event.toLocaleTimeString('it-IT'));
-                sch.innerHTML = data.message + data.hour + ":" + data.minute;
+                var time = event.toLocaleTimeString('it-IT');
+                // console.log(event.toLocaleTimeString('it-IT'));
+                var days = "";
+                for (i=0; i<data.day.length; i++) {
+                    days += data.day[i].substring(0, 3) + " ";
+                }
+                sch.innerHTML = data.message + " - " + time + " - " + days;
                 all_schedules.appendChild(sch);
             }
         }
