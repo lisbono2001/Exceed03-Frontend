@@ -205,6 +205,8 @@ body {
 
 .patient {
     background-color: gainsboro;
+    color :rgb(240, 240, 240);
+    font-size: 2rem;
     height: 5rem;
     width: 10rem;
     border: 0;
@@ -212,8 +214,9 @@ body {
     display: inline-block;
     margin: 0.5rem;
     transition: transform .2s;
+    text-align: center;
 }
 
 .patient:hover {
-    transform: scale(1.2);
+    transform: scale(1.1);
 }
