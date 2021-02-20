@@ -14,15 +14,18 @@
         <div class="container-fluid bg-warning" id="header">CABP.</div>
         <div class="container-fluid" id="main-content">
             <div>
-                <div class="history-tab" id="history-tab">
+                <div type="button" class="history-tab" id="history-tab">
                     &#128193; History
                 </div>
-                <div class="schedule-tab" id="schedule-tab">
+                <div type="button" class="schedule-tab" id="schedule-tab">
                     &#128338; Schedule
+                </div>
+                <div type="button" class="patientlist-tab" id="patientlist-tab">
+                    &#128338; Patients
                 </div>
             </div>
             
-            <div class="bg-light patient" id="patient1">
+            <div class="bg-light patientboard" id="patientboard">
                 <div class="row justify-content-center">
                     <div class="col-md bg-dark" id="patient-status">
                         <div class="center">
@@ -125,6 +128,22 @@
                     </div>
                     <div class="modal-body">
                         <div class="schedule-container" id="schedule-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Patient Selecter window -->
+        <div class="modal fade" id="patientlist" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title" id="modal-title">Select Patient</h1>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="patientlist-container" id="patientlist-container"></div>
                     </div>
                 </div>
             </div>

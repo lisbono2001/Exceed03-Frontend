@@ -1,18 +1,12 @@
 //assume that patient id is sorted
 function updatePatientNumber() {
-// const { strict } = require("assert");
-// const { time } = require("console");
-    fetch("#")
-    .then((response) => {
+    fetch("http://158.108.182.3:3000/all_user")
+        .then((response) => {
         return response.json();
     })
     .then((json) => {
         //if number of patient in the page and json file doesn't match
-        if (json.length > currentPatientCount) {
-            for (var i=currentPatientCount+1; i<=json.length ; i++) {
-                addPatientField(json[i]['name'],json[i]['age'],json[i]['address']);
-            }
-        }
+        console.log(json);
     })
     .catch((error) => {
         console.error(error);
@@ -49,45 +43,20 @@ function updatePatientMessageLog() {
     });
 }
 
-var currentPatientCount = 0
-
-//add patients
-function addPatientField(name, age, address) {
-    currentPatientCount++;
-    var patient = document.querySelector('#main-content').lastElementChild;
-    //for first patient (use template)
-    if (currentPatientCount===1) {
-        patient.id = 'patient'+currentPatientCount;
-        patient.querySelector('#name').innerHTML = name;
-        patient.querySelector('#age').innerHTML = age;
-        patient.querySelector('#address').innerHTML = address;
-    }
-    else {
-        currentPatientCount++;
-        var clone = patient.cloneNode(true);
-        clone.id = 'patient'+currentPatientCount;
-        clone.querySelector('#name').innerHTML = name;
-        clone.querySelector('#age').innerHTML = age;
-        clone.querySelector('#address').innerHTML = address;
-        clone.querySelector('#message').value = "";
-        patient.after(clone);
-    }
-}
-
-function setPatientInfo(patientID, name, age, address) {
-    // patient = document.getElementById('patient'+patientID)
-    var patient = document.querySelector('#patient'+patientID);
-    if (status==="normal") {
-        patient.querySelector("#status-light").style.backgroundColor = "green";
-    }
-    else if (status==="idle") {
-        patient.querySelector("#status-light").style.backgroundColor = "orange";
-    }
-    else if (status==="danger") {
-        patient.querySelector("#status-light").style.backgroundColor = "red";
-        alertScreen(patient.id);
-    }
-}
+// function setPatientInfo(patientID, name, age, address) {
+//     // patient = document.getElementById('patient'+patientID)
+//     var patient = document.querySelector('#patient'+patientID);
+//     if (status==="normal") {
+//         patient.querySelector("#status-light").style.backgroundColor = "green";
+//     }
+//     else if (status==="idle") {
+//         patient.querySelector("#status-light").style.backgroundColor = "orange";
+//     }
+//     else if (status==="danger") {
+//         patient.querySelector("#status-light").style.backgroundColor = "red";
+//         alertScreen(patient.id);
+//     }
+// }
 
 //loop update status from first to last patient
 function setPatientStatus(patientID, status, lastTimestamp) {
@@ -108,7 +77,7 @@ function setPatientStatus(patientID, status, lastTimestamp) {
 function checkEmptyMessage(){
     var value = document.getElementById('message').value;
     if (value.trim().length > 0) {
-        document.getElementById('submit-message').disabled = false; 
+        document.getElementById('sent-message').disabled = false; 
         document.getElementById('set-time').disabled = false; 
     } 
     else { 
@@ -128,7 +97,7 @@ function alertScreen(patientid) {
 }
 
 var dayArray = [];
-var formCounted = 1;
+// var formCounted = 1;
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 //clear data from dayArray and re-color day buttons.
@@ -286,6 +255,7 @@ function formatTime() {
     }
 }
 
+
 function showHistory() {
     var historyList = document.getElementById("history-container");
     // console.log(historyList);
@@ -308,13 +278,82 @@ function showSchedule() {
     $('#schedule').modal("show");
 }
 
+function showPatientList() {
+    var patientList = document.getElementById("patientlist-container");
+    $('#patientlist-container').empty();
+    fetch("http://158.108.182.3:3000/all_user")
+        .then((response) => {
+        return response.json();
+    })
+    .then((json) => {
+        console.log(json);
+        json["result"].forEach(patientdata => {
+            var patient = document.createElement("button");
+            patient.className = "patient";
+            patient.id = "patient";
+            patient.innerHTML = patientdata["name"];
+            patient.addEventListener("click", ()=> {
+                currentPatientID = patientdata["user_id"];
+                $('#patientlist').modal("hide");
+                updatePatientInfo();
+            });
+            if (patientdata['status']==="normal") {
+                patient.style.backgroundColor = "green"
+            }
+            else if (patientdata['status']==="idle") {
+                patient.style.backgroundColor = "orange"
+            }
+            else if (patientdata['status']==="danger") {
+                patient.style.backgroundColor = "red"
+            }
+            patientList.appendChild(patient);
+        });
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+    $('#patientlist').modal("show");
+}
+
+var currentPatientID = 1;
+
+function updatePatientInfo() {
+    let patient_id = currentPatientID - 1;
+    fetch("http://158.108.182.3:3000/all_user")
+        .then((response) => {
+        return response.json();
+    })
+    .then((json) => {
+    patientdata = json["result"];
+    var patient = document.querySelector('#patientboard');
+    patient.querySelector('#name').innerHTML = patientdata[patient_id]["name"];
+    patient.querySelector('#age').innerHTML = patientdata[patient_id]["age"];
+    patient.querySelector('#address').innerHTML = patientdata[patient_id]["address"];
+
+    let status = patientdata[patient_id]["status"];
+    if (status==="normal") {
+        patient.querySelector("#status-light").style.backgroundColor = "green";
+    }
+    else if (status==="idle") {
+        patient.querySelector("#status-light").style.backgroundColor = "orange";
+    }
+    else if (status==="danger") {
+        patient.querySelector("#status-light").style.backgroundColor = "red";
+        alertScreen(patient.id);
+    }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+}
+
 //EventListeners
 
 document.getElementById("message").addEventListener("keyup", checkEmptyMessage);
 document.getElementById("set-time").addEventListener("click", setTime);
 document.getElementById("set-time").addEventListener("click", initSetTimeForm);
-document.getElementById("reduce-form").addEventListener("click", reduceSetTimeForm);
-document.getElementById("add-form").addEventListener("click", addSetTimeForm);
+// document.getElementById("reduce-form").addEventListener("click", reduceSetTimeForm);
+// document.getElementById("add-form").addEventListener("click", addSetTimeForm);
 Array.from(document.getElementsByClassName('day')).forEach(function(element){
   element.addEventListener("click", selectDay);
 });
@@ -322,9 +361,10 @@ document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
 document.getElementById("history-tab").addEventListener("click", showHistory);
 document.getElementById("schedule-tab").addEventListener("click", showSchedule);
+document.getElementById("patientlist-tab").addEventListener("click", showPatientList);
 
 document.getElementById("hours").addEventListener("change", formatTime);
 document.getElementById("mins").addEventListener("change", formatTime);
 
-// setInterval(()=> updatePatientNumber(),5000);
+setInterval(()=> updatePatientInfo(),1000);
 // setInterval(()=> updatePatientStatus(),1000);
