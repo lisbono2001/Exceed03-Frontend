@@ -213,12 +213,15 @@ body {
 .schedule-list {
     font-size: larger;
     white-space: nowrap;
+    padding: 15px;
     justify-content: space-evenly;
 }
 
 .remove-btn {
     background-color: red;
-    width: 5vw;
+    position:absolute;
+    right: 2px;
+    width: 7vw;
     border-radius: 5px;
     overflow: hidden;
 }
