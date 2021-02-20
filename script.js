@@ -298,24 +298,33 @@ function showHistory() {
 }
 
 function showSchedule() {
+    const url = "http://158.108.182.3:3000/msg?user_id=1";
+
+    // console.log(sch_list.length);
+
     var historyList = document.getElementById("schedule-container");
-    // console.log(historyList);
     var all_schedules = document.createElement("ul");
-    for (i=0; i<15; i++) {  // for loop append all history.
-        var sch = document.createElement("li");
-        sch.className = "schedule-list"
-        // add detail
-        sch.innerHTML = "test message ";
 
-        // add button
-        var remove_btn = document.createElement("button");
-        remove_btn.className = "remove-btn";
-        remove_btn.setAttribute("type", "button");
-        remove_btn.innerHTML = "remove";
-        sch.appendChild(remove_btn);
-
-        historyList.appendChild(sch);
-    }
+    fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+    }).then((response) => {
+        return response.json();
+    }).then((json) => {
+        //if number of patient in the page and json file doesn't match
+        // console.log(json.result)
+        for (const message in json.result) {
+            data = json.result[message];
+            if (data.type == "schedule") {
+                var sch = document.createElement("li");
+                const event = new Date(2000, 1, 1, data.hour, data.minute);
+                console.log(event.toLocaleTimeString('it-IT'));
+                sch.innerHTML = data.message + data.hour + ":" + data.minute;
+                all_schedules.appendChild(sch);
+            }
+        }
+    });
+    historyList.appendChild(all_schedules)
     $('#schedule').modal("show");
 }
 
@@ -324,8 +333,8 @@ function showSchedule() {
 document.getElementById("message").addEventListener("keyup", checkEmptyMessage);
 document.getElementById("set-time").addEventListener("click", setTime);
 document.getElementById("set-time").addEventListener("click", initSetTimeForm);
-document.getElementById("reduce-form").addEventListener("click", reduceSetTimeForm);
-document.getElementById("add-form").addEventListener("click", addSetTimeForm);
+// document.getElementById("reduce-form").addEventListener("click", reduceSetTimeForm);
+// document.getElementById("add-form").addEventListener("click", addSetTimeForm);
 Array.from(document.getElementsByClassName('day')).forEach(function(element){
   element.addEventListener("click", selectDay);
 });
