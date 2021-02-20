@@ -63,7 +63,7 @@ function updateStatus(name,status) {
 
 function checkEmpty(){
     var value = document.getElementById('message').value;
-    if (value.length > 0) {
+    if (value.trim().length > 0) {
         document.getElementById('submit-message').disabled = false; 
         document.getElementById('set-time').disabled = false; 
     } 
@@ -93,6 +93,7 @@ function setTime() {
     if (message.trim() == "") {  // if no any message are in text box just popup error.
         window.alert("please type something!!");
         $('#popup').modal("hide");
+        document.getElementById("message").value = '';
         return;
     }
     $('#popup').modal("show");  // show modal.
@@ -182,7 +183,7 @@ function sentMessage() {
         window.alert("please type something!!");
         return;
     }
-    document.getElementById("message").value = "";
+    document.getElementById("message").value = '';
     console.log(message);
 }
 
@@ -227,23 +228,50 @@ function checkValidTime() {
 }
 
 function formatTime() {
-    hours = document.getElementById("hours").value;
-    mins = document.getElementById("mins").value;
-    while (mins >= 60) {
-        mins -= 60;
-        hours += 1;
+    if (document.getElementById("hours").value > 23) {
+        document.getElementById("hours").value = 23;
     }
-    if (hours > 24) {
-        hours = 24;
+    else if (document.getElementById("hours").value < 0) {
+        document.getElementById("hours").value = 0;
     }
-    document.getElementById("hours").value = hours;
-    document.getElementById("mins").value = mins;
+    if (document.getElementById("mins").value > 59) {
+        document.getElementById("mins").value = 59;
+    }
+    else if (document.getElementById("mins").value < 0) {
+        document.getElementById("mins").value = 0;
+    }
+}
+
+function showHistory() {
+    var historyList = document.getElementById("history-container");
+    // console.log(historyList);
+    for (i=0; i<35; i++) {  // for loop append all history.
+        var li = document.createElement("div");
+        li.appendChild(document.createTextNode("History of everything"));
+        historyList.appendChild(li);
+    }
+    $('#history').modal("show");
+}
+
+function showSchedule() {
+    var historyList = document.getElementById("schedule-container");
+    // console.log(historyList);
+    for (i=0; i<35; i++) {  // for loop append all history.
+        var li = document.createElement("div");
+        li.appendChild(document.createTextNode("Schedule of everything"));
+        historyList.appendChild(li);
+    }
+    $('#schedule').modal("show");
 }
 
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
 document.getElementById("set-time").addEventListener("click", setTime);
 
+document.getElementById("history-tab").addEventListener("click", showHistory);
+document.getElementById("schedule-tab").addEventListener("click", showSchedule);
+
+document.getElementById("hours").addEventListener("change", formatTime);
 document.getElementById("mins").addEventListener("change", formatTime);
 
 // setInterval(()=> update(),1000);
