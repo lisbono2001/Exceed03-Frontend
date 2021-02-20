@@ -99,6 +99,7 @@ function alertScreen(patientid) {
 var dayArray = [];
 // var formCounted = 1;
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+var days_full = {Sun: "Sunday", Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday"};
 
 //clear data from dayArray and re-color day buttons.
 function setTime() {
@@ -113,14 +114,12 @@ function setTime() {
     for (var i=0; i < dayArray.length; i++) {
         document.getElementById(dayArray[i]).style.backgroundColor = "gainsboro";
     }
-    initForm();
+    initSetTimeForm();
 
     now = new Date(Date.now());  // time now
     document.getElementById("hours").value = now.getHours();  // auto fill hour to be current time.
     document.getElementById("mins").value = now.getMinutes() + 1;  // auto fill hour to be current time.
 
-    var dayName = days[now.getDay()];
-    selectDay(dayName);
 }
 
 //clear and recreate time form
@@ -167,6 +166,7 @@ function selectDay() {
         dayArray.splice(dayArray.indexOf(this.value),1);
         this.style.backgroundColor = "gainsboro";
     }
+    // console.log(dayArray);
 }
 
 // -------  POST request to DB  -------
@@ -197,6 +197,18 @@ function sentMessage() {
     }
     document.getElementById("message").value = '';
     console.log(message);
+
+    url = "http://158.108.182.3:3000/new_msg?user_id=1"  // change user id.
+
+    fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            message: message,
+            type: "live"
+        })
+    }).then((response) => console.log(response))
+    .then((result) => console.log(result));
 }
 
 //save message day(s) and time(s) from form
@@ -217,8 +229,28 @@ function saveMessage() {
         window.alert("please select day to send message!!");
         return;
     }
-    hours = document.getElementById("hours");
-    mins = document.getElementById("mins");
+    hours = parseInt(document.getElementById("hours").value);
+    mins = parseInt(document.getElementById("mins").value);
+
+    url = "http://158.108.182.3:3000/create_schedule?user_id=1"  // change user id.
+    var day_schedule = [];
+    for (i=0; i<dayArray.length; i++) {
+        day_schedule.push(days_full[dayArray[i]]);
+    }
+    fetch(url, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            message: message,
+            type: "schedule",
+            hour: hours,
+            minute: mins,
+            second: 0,
+            day: day_schedule
+        })
+    }).then((response) => console.log(response))
+    .then((result) => console.log(result));
+    $('#popup').modal("hide");
 }
 
 // check if time in message box is valid (not in the pass)
@@ -256,25 +288,53 @@ function formatTime() {
 }
 
 
-function showHistory() {
-    var historyList = document.getElementById("history-container");
-    // console.log(historyList);
-    for (i=0; i<35; i++) {  // for loop append all history.
-        var li = document.createElement("div");
-        li.appendChild(document.createTextNode("History of everything"));
-        historyList.appendChild(li);
-    }
-    $('#history').modal("show");
-}
 
 function showSchedule() {
+    const url = "http://158.108.182.3:3000/msg?user_id=1";
+
+    // console.log(sch_list.length);
+
     var historyList = document.getElementById("schedule-container");
-    // console.log(historyList);
-    for (i=0; i<35; i++) {  // for loop append all history.
-        var li = document.createElement("div");
-        li.appendChild(document.createTextNode("Schedule of everything"));
-        historyList.appendChild(li);
-    }
+    historyList.innerHTML = "";
+    var all_schedules = document.createElement("ul");
+
+    fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+    }).then((response) => {
+        return response.json();
+    }).then((json) => {
+        //if number of patient in the page and json file doesn't match
+        // console.log(json.result)
+        for (const message in json.result) {
+            data = json.result[message];
+            if (data.type == "schedule") {
+                var sch = document.createElement("li");
+                const event = new Date(2000, 1, 1, data.hour, data.minute);
+                var time = event.toLocaleTimeString('it-IT');
+                // console.log(event.toLocaleTimeString('it-IT'));
+                var days = "";
+                for (i=0; i<data.day.length; i++) {
+                    days += data.day[i].substring(0, 3) + " ";
+                }
+                sch.innerHTML = data.message + " - " + time + " - " + days;
+
+                var remove_btn = document.createElement("button");
+                remove_btn.className = "remove-btn";
+                remove_btn.innerHTML = "remove";
+                remove_btn.onclick = function() {
+                    fetch("http://158.108.182.3:3000/delete_schedule?msg_id="+data.msg_id, {
+                        method: "DELETE"
+                    });
+                    $('#schedule').modal("hide");
+                };
+                sch.appendChild(remove_btn);
+
+                all_schedules.appendChild(sch);
+            }
+        }
+    });
+    historyList.appendChild(all_schedules)
     $('#schedule').modal("show");
 }
 
@@ -359,7 +419,6 @@ Array.from(document.getElementsByClassName('day')).forEach(function(element){
 });
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
-document.getElementById("history-tab").addEventListener("click", showHistory);
 document.getElementById("schedule-tab").addEventListener("click", showSchedule);
 document.getElementById("patientlist-tab").addEventListener("click", showPatientList);
 

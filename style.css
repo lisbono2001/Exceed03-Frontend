@@ -203,6 +203,27 @@ body {
     overflow-y: scroll;
 }
 
+.schedule-container {
+    height: 60vh;
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+.schedule-list {
+    font-size: larger;
+    white-space: nowrap;
+    padding: 15px;
+    justify-content: space-evenly;
+}
+
+.remove-btn {
+    background-color: red;
+    position:absolute;
+    right: 2px;
+    width: 7vw;
+    border-radius: 5px;
+    overflow: hidden;
+
 .patient {
     background-color: gainsboro;
     color :rgb(240, 240, 240);
