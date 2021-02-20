@@ -202,6 +202,19 @@ body {
 
 .schedule-container {
     height: 60vh;
-    padding: 5px;
+    padding: 10px;
     overflow-y: scroll;
+}
+
+.schedule-list {
+    font-size: larger;
+    white-space: nowrap;
+    justify-content: space-evenly;
+}
+
+.remove-btn {
+    background-color: red;
+    width: 5vw;
+    border-radius: 5px;
+    overflow: hidden;
 }

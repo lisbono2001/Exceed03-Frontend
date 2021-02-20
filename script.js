@@ -1,5 +1,6 @@
 // const { strict } = require("assert");
 // const { time } = require("console");
+import Chart from 'chart.js';
 
 function update() {
     const fetch = require("node-fetch");
@@ -256,10 +257,21 @@ function showHistory() {
 function showSchedule() {
     var historyList = document.getElementById("schedule-container");
     // console.log(historyList);
-    for (i=0; i<35; i++) {  // for loop append all history.
-        var li = document.createElement("div");
-        li.appendChild(document.createTextNode("Schedule of everything"));
-        historyList.appendChild(li);
+    var all_schedules = document.createElement("ul");
+    for (i=0; i<15; i++) {  // for loop append all history.
+        var sch = document.createElement("li");
+        sch.className = "schedule-list"
+        // add detail
+        sch.innerHTML = "test message ";
+
+        // add button
+        var remove_btn = document.createElement("button");
+        remove_btn.className = "remove-btn";
+        remove_btn.setAttribute("type", "button");
+        remove_btn.innerHTML = "remove";
+        sch.appendChild(remove_btn);
+
+        historyList.appendChild(sch);
     }
     $('#schedule').modal("show");
 }
@@ -273,5 +285,19 @@ document.getElementById("schedule-tab").addEventListener("click", showSchedule);
 
 document.getElementById("hours").addEventListener("change", formatTime);
 document.getElementById("mins").addEventListener("change", formatTime);
+
+let myChart = document.getElementById("myChart").getContext("2d");
+
+let barChart = new Chart(myChart,{
+    type: 'bar',
+    date: {
+        labels: ['12:00'],
+        datasets: [{
+            label: 'message',
+            data: [200],
+        }],
+    },
+    option: {},
+});
 
 // setInterval(()=> update(),1000);
