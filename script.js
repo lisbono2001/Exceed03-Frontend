@@ -107,8 +107,8 @@ function setPatientStatus(patientID, status, lastTimestamp) {
 //if text messsage is empty, disable send and settime button
 function checkEmptyMessage(){
     var value = document.getElementById('message').value;
-    if (value.length > 0) {
-        document.getElementById('sent-message').disabled = false; 
+    if (value.trim().length > 0) {
+        document.getElementById('submit-message').disabled = false; 
         document.getElementById('set-time').disabled = false; 
     } 
     else { 
@@ -137,6 +137,7 @@ function setTime() {
     if (message.trim() == "") {  // if no any message are in text box just popup error.
         window.alert("please type something!!");
         $('#popup').modal("hide");
+        document.getElementById("message").value = '';
         return;
     }
     $('#popup').modal("show");  // show modal.
@@ -225,7 +226,7 @@ function sentMessage() {
         window.alert("please type something!!");
         return;
     }
-    document.getElementById("message").value = "";
+    document.getElementById("message").value = '';
     console.log(message);
 }
 
@@ -269,6 +270,44 @@ function checkValidTime() {
     return true;
 }
 
+
+function formatTime() {
+    if (document.getElementById("hours").value > 23) {
+        document.getElementById("hours").value = 23;
+    }
+    else if (document.getElementById("hours").value < 0) {
+        document.getElementById("hours").value = 0;
+    }
+    if (document.getElementById("mins").value > 59) {
+        document.getElementById("mins").value = 59;
+    }
+    else if (document.getElementById("mins").value < 0) {
+        document.getElementById("mins").value = 0;
+    }
+}
+
+function showHistory() {
+    var historyList = document.getElementById("history-container");
+    // console.log(historyList);
+    for (i=0; i<35; i++) {  // for loop append all history.
+        var li = document.createElement("div");
+        li.appendChild(document.createTextNode("History of everything"));
+        historyList.appendChild(li);
+    }
+    $('#history').modal("show");
+}
+
+function showSchedule() {
+    var historyList = document.getElementById("schedule-container");
+    // console.log(historyList);
+    for (i=0; i<35; i++) {  // for loop append all history.
+        var li = document.createElement("div");
+        li.appendChild(document.createTextNode("Schedule of everything"));
+        historyList.appendChild(li);
+    }
+    $('#schedule').modal("show");
+}
+
 //EventListeners
 
 document.getElementById("message").addEventListener("keyup", checkEmptyMessage);
@@ -281,7 +320,11 @@ Array.from(document.getElementsByClassName('day')).forEach(function(element){
 });
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
-document.getElementById("set-time").addEventListener("click", setTime);
+document.getElementById("history-tab").addEventListener("click", showHistory);
+document.getElementById("schedule-tab").addEventListener("click", showSchedule);
+
+document.getElementById("hours").addEventListener("change", formatTime);
+document.getElementById("mins").addEventListener("change", formatTime);
 
 // setInterval(()=> updatePatientNumber(),5000);
 // setInterval(()=> updatePatientStatus(),1000);
