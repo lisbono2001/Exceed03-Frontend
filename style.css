@@ -161,6 +161,7 @@ body {
     right: 0;
     top: 40vh;
     padding: 0.5rem;
+    border-radius: 5%;
     border-top-left-radius: 1rem;
     border-bottom-left-radius: 1rem;
     font-size: xxx-large;
