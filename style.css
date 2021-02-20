@@ -1,0 +1,149 @@
+body {
+    font-family: "Gill Sans", sans-serif !important;
+}
+
+#header {
+    width: 100%;
+    font-size: 10rem;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', sans-serif;
+    letter-spacing: 1;
+    text-align: center;
+}
+
+.row {
+    display: block;
+    padding: 2rem;
+}
+
+.center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+#patient {
+    margin: 1rem;
+    padding: 1rem;
+    width: 85%;
+    margin: auto;
+}
+
+#patient-status {
+    color:rgb(240, 240, 240);
+    min-width: 25rem;
+    max-width: 25rem;
+    min-height: 30rem;
+    max-height: 30rem;
+}
+
+#status-light {
+    height: 1rem;
+    width: 1rem;
+    background-color: rgb(30, 255, 9);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+#profile-pic {
+    display: block;
+    padding: 1rem;
+    min-width: 22rem;
+    max-width: 22rem;
+    background-color: antiquewhite;
+}
+
+#patient-info {
+    min-width: 35rem;
+    max-width: 50rem;
+    min-height: 20rem;
+    max-height: none;
+    font-size: 2rem;
+    padding: 3rem;
+}
+
+#sentText {
+    min-width: 45rem;
+    max-width: 50rem;
+    min-height: 20rem;
+    max-height: none;
+}
+
+#formText {
+    min-width: 45rem;
+    max-width: 50rem;
+    min-height: 20rem;
+    padding: 2rem;
+    padding-bottom: 0rem;
+}
+
+#message-label {
+    font-size: 2.5rem;
+}
+
+#message {
+    display: block;
+    margin:auto;
+    font-size: 2rem;
+    width: 32rem;
+    height: 6rem;
+}
+
+#hours ,#mins {
+    display: block;
+    padding: 1rem;
+    font-size: 2rem;
+    height: 6rem;
+}
+
+#colbut {
+    padding: 0.1rem;
+}
+
+#submit-message, #set-time, #save-time, #sent-message {
+    display: block;
+    margin: auto;
+    font-size: 2.5rem;
+    width: 12.5rem;
+    height: 6rem;
+}
+
+#popup {
+    font-size: 2rem;
+}
+
+#hours, #mins {
+    display: inline-block;
+    padding: 1rem;
+    font-size: 2rem;
+    height: 5rem;
+}
+
+.day {
+    background-color: gainsboro;
+    height: 5rem;
+    width: 5rem;
+    border: 0;
+    border-radius: 50%;
+    display: inline-block;
+    margin: 0.5rem;
+    transition: transform .2s;
+}
+
+#add-form ,#reduce-form {
+    background-color: rgb(255, 217, 113);
+    text-align: center;
+    padding: 0.5rem;
+    height: 4rem;
+    width: 4rem;
+    font-size: 2rem;
+    border: 0;
+    border-radius: 50%;
+}
+
+.day:hover {
+    transform: scale(1.2);
+}
