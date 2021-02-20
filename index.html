@@ -12,17 +12,16 @@
     </head>
     <body>
         <div class="container-fluid bg-warning" id="header">CABP.</div>
-        <div class="container-fluid" id="main-content">
+        <div class="container-fluid" id="patientboard">
             <div>
-                <div type="button" class="patientlist-tab" id="patientlist-tab">
-                    &#128567; Patients
+                <div type="button" class="" id="patientlist-tab">
+                    <span id="patienticon">&#128567;</span>  Patients
                 </div>
-                <div type="button" class="schedule-tab" id="schedule-tab">
-                    &#128338; Schedule
+                <div type="button" id="schedule-tab">
+                    <span id="scheduleicon">&#128338;</span>  Schedule
                 </div>
             </div>
             
-            <div class="bg-light patientboard" id="patientboard">
                 <div class="row justify-content-center">
                     <div class="col-md bg-dark" id="patient-status">
                         <div class="center">
@@ -42,7 +41,7 @@
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-md" id="colbut">
-                                    <button type="button" class="btn btn-success" id="sent-message">Sent</button>
+                                    <button type="button" class="btn btn-success" id="sent-message" disabled="true">Sent</button>
                                 </div>
                                 <div class="col-md" id="colbut">
                                     <button type="button" class="btn btn-info" id="set-time" disabled="true">Set time</button>
@@ -109,7 +108,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" id="schedule-body">
                         <ul class="schedule-container" id="schedule-container"></ul>
                     </div>
                 </div>
@@ -130,7 +129,6 @@
                     </div>
                 </div>
             </div>
-        </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

@@ -1,63 +1,3 @@
-//assume that patient id is sorted
-function updatePatientNumber() {
-    fetch("http://158.108.182.3:3000/all_user")
-        .then((response) => {
-        return response.json();
-    })
-    .then((json) => {
-        //if number of patient in the page and json file doesn't match
-        console.log(json);
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-}
-
-//update each patient status
-function updatePatientStatus() {
-    fetch("#")
-    .then((response) => {
-        return response.json();
-    })
-    .then((json) => {
-        for (var i=1; i<=currentPatientCount ; i++) {
-            setPatientStatus(json[i]['user_id'],json[i]['status'],json[i]['last_update_timestamp']);
-        }
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-}
-
-// use when called
-function updatePatientMessageLog() {
-    fetch("#")
-    .then((response) => {
-        return response.json();
-    })
-    .then((json) => {
-        // update message on popup
-    })
-    .catch((error) => {
-        console.error(error);
-    });
-}
-
-//loop update status from first to last patient
-function setPatientStatus(patientID, status, lastTimestamp) {
-    var patient = document.querySelector('#patient'+patientID);
-    if (status==="normal") {
-        patient.querySelector("#status-light").style.backgroundColor = "green";
-    }
-    else if (status==="idle") {
-        patient.querySelector("#status-light").style.backgroundColor = "orange";
-    }
-    else if (status==="danger") {
-        patient.querySelector("#status-light").style.backgroundColor = "red";
-        alertScreen(patient.id);
-    }
-}
-
 //if text messsage is empty, disable send and settime button
 function checkEmptyMessage(){
     var value = document.getElementById('message').value;
@@ -71,18 +11,8 @@ function checkEmptyMessage(){
     }
 }
 
-//change specific patient background color to danger color
-function alertScreen(patientid) {
-    window.setInterval(()=>{
-        if (document.getElementById(patientid).style.backgroundColor === "blue")
-            document.getElementById(patientid).style.backgroundColor = "red";
-        else
-            document.getElementById(patientid).style.backgroundColor = "blue";
-    },3000);
-}
-
 var dayArray = [];
-// var formCounted = 1;
+var formCounted = 1;
 var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 var days_full = {Sun: "Sunday", Mon: "Monday", Tue: "Tuesday", Wed: "Wednesday", Thu: "Thursday", Fri: "Friday", Sat: "Saturday"};
 
@@ -110,6 +40,7 @@ function setTime() {
 //clear and recreate time form
 function initSetTimeForm() {
     var container = document.getElementById("form-group");
+    document.getElementById("modal-title").innerHTML = document.getElementById("message").value;
     //clear until left only form starter template
     while (formCounted > 1) {
         container.removeChild(container.lastChild);
@@ -152,25 +83,6 @@ function selectDay() {
         this.style.backgroundColor = "gainsboro";
     }
     // console.log(dayArray);
-}
-
-// -------  POST request to DB  -------
-
-// var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:5500/";
-
-//sameple post
-function inset(jsonData) {
-    MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("mydb");
-    var myobj = { name: jsonData['name'], address: jsonData['address']};
-    dbo.collection("customers").insertOne(myobj, function(err, res) {
-        if (err) throw err;
-        console.log("1 document inserted");
-        db.close();
-    }); 
-    });
 }
 
 //sent message to patient
@@ -273,11 +185,8 @@ function formatTime() {
 }
 
 
-
 function showSchedule() {
     const url = "http://158.108.182.3:3000/msg?user_id="+currentPatientID;
-
-    // console.log(sch_list.length);
 
     var historyList = document.getElementById("schedule-container");
     historyList.innerHTML = "";
@@ -294,7 +203,9 @@ function showSchedule() {
         for (const message in json.result) {
             var data = json.result[message];
             if (data.type == "schedule") {
-                var sch = document.createElement("li");
+                var sch = document.createElement("div");
+                sch.id = "schedule-list";
+
                 const event = new Date(2000, 1, 1, data.hour, data.minute);
                 var time = event.toLocaleTimeString('it-IT');
                 // console.log(event.toLocaleTimeString('it-IT'));
@@ -304,8 +215,10 @@ function showSchedule() {
                 }
                 sch.innerHTML = data.message + " - " + time + " - " + days;
 
+                //append remove button
                 var remove_btn = document.createElement("button");
-                remove_btn.className = "remove-btn";
+                remove_btn.className = "btn btn-danger";
+                remove_btn.id = "remove-btn";
                 remove_btn.innerHTML = "remove";
                 remove_btn.value = data.msg_id;
                 remove_btn.addEventListener("click",removeSchedule);
@@ -318,6 +231,7 @@ function showSchedule() {
     $('#schedule').modal("show");
 }
 
+
 function removeSchedule() {
     fetch("http://158.108.182.3:3000/delete_schedule?msg_id="+this.value, {
         method: "DELETE"
@@ -325,6 +239,7 @@ function removeSchedule() {
     $('#schedule').modal("hide");
 }
 
+//show patient list when clicked side bar
 function showPatientList() {
     var patientList = document.getElementById("patientlist-container");
     $('#patientlist-container').empty();
@@ -334,6 +249,7 @@ function showPatientList() {
     })
     .then((json) => {
         console.log(json);
+        var danger = false;
         json["result"].forEach(patientdata => {
             var patient = document.createElement("button");
             patient.className = "patient";
@@ -364,6 +280,8 @@ function showPatientList() {
 
 var currentPatientID = 1;
 
+var danger = false;
+
 function updatePatientInfo() {
     let patient_id = currentPatientID - 1;
     fetch("http://158.108.182.3:3000/all_user")
@@ -386,8 +304,18 @@ function updatePatientInfo() {
     }
     else if (status==="danger") {
         patient.querySelector("#status-light").style.backgroundColor = "red";
-        alertScreen(patient.id);
     }
+    var checkdanger = false;
+    json["result"].forEach(patientdata => {
+        if (patientdata['status']==="danger") {
+            checkdanger = true;
+        }
+    });
+    danger = checkdanger;
+    if (danger) { 
+        document.getElementById("patienticon").innerHTML = "&#127384;"
+    }
+    else document.getElementById("patienticon").innerHTML = "&#128567;"
     })
     .catch((error) => {
         console.error(error);
