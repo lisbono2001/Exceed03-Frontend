@@ -1,5 +1,7 @@
 //assume that patient id is sorted
 function updatePatientNumber() {
+// const { strict } = require("assert");
+// const { time } = require("console");
     fetch("#")
     .then((response) => {
         return response.json();
@@ -127,16 +129,28 @@ function alertScreen(patientid) {
 
 var dayArray = [];
 var formCounted = 1;
+var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 //clear data from dayArray and re-color day buttons.
 function setTime() {
     var message = document.getElementById("message").value;
-    document.getElementById("modal-title").innerHTML = "Message: " + message;
-    //clear select day color and clear day array
-    for (var i=0; i<dayArray.length; i++) {
+    if (message.trim() == "") {  // if no any message are in text box just popup error.
+        window.alert("please type something!!");
+        $('#popup').modal("hide");
+        return;
+    }
+    $('#popup').modal("show");  // show modal.
+    for (var i=0; i < dayArray.length; i++) {
         document.getElementById(dayArray[i]).style.backgroundColor = "gainsboro";
     }
-    dayArray = [];
+    initForm();
+
+    now = new Date(Date.now());  // time now
+    document.getElementById("hours").value = now.getHours();  // auto fill hour to be current time.
+    document.getElementById("mins").value = now.getMinutes() + 1;  // auto fill hour to be current time.
+
+    var dayName = days[now.getDay()];
+    selectDay(dayName);
 }
 
 //clear and recreate time form
@@ -206,16 +220,54 @@ function inset(jsonData) {
 
 //sent message to patient
 function sentMessage() {
-    console.log("Message sent!!");
-    // document.getElementById("sent-message").innerHTML = "Sent!!";
+    message = document.getElementById("message").value;
+    if (message.trim() == "") {
+        window.alert("please type something!!");
+        return;
+    }
+    document.getElementById("message").value = "";
+    console.log(message);
 }
 
 //save message day(s) and time(s) from form
 function saveMessage() {
-    console.log("Save the day!!")
+    message = document.getElementById("message").value;
+    if (message.trim() == "") {
+        $('#popup').modal("hide");
+        window.alert("please type something!!");
+        return;
+    }
     console.log(dayArray);
+
+    if (!checkValidTime()) {  // check time
+        return;
+    }
+
+    if (dayArray.length == 0) {
+        window.alert("please select day to send message!!");
+        return;
+    }
+    hours = document.getElementById("hours");
+    mins = document.getElementById("mins");
 }
 
+// check if time in message box is valid (not in the pass)
+function checkValidTime() {
+    now = new Date(Date.now());  // time now
+    hours = document.getElementById("hours").value;
+    mins = document.getElementById("mins").value;
+    set_time = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, mins);
+    if (dayArray.length > 1 || !dayArray.includes(days[now.getDay()])) {
+        return true;
+    }
+    if (set_time.getTime() < now.getTime()) {
+        document.getElementById("hours").value = now.getHours();
+        document.getElementById("mins").value = now.getMinutes() + 1;
+        window.alert("you cannot send message to the pass!!");
+        return false;
+    }
+    return true;
+}
 
 //EventListeners
 
@@ -229,6 +281,7 @@ Array.from(document.getElementsByClassName('day')).forEach(function(element){
 });
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
+document.getElementById("set-time").addEventListener("click", setTime);
 
 // setInterval(()=> updatePatientNumber(),5000);
 // setInterval(()=> updatePatientStatus(),1000);
