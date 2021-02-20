@@ -214,6 +214,9 @@ function checkValidTime() {
     hours = document.getElementById("hours").value;
     mins = document.getElementById("mins").value;
     set_time = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, mins);
+    if (dayArray.length > 1 || !dayArray.includes(days[now.getDay()])) {
+        return true;
+    }
     if (set_time.getTime() < now.getTime()) {
         document.getElementById("hours").value = now.getHours();
         document.getElementById("mins").value = now.getMinutes() + 1;
