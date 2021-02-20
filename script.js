@@ -89,7 +89,7 @@ function setTime() {
 
     now = new Date(Date.now());  // time now
     document.getElementById("hours1").value = now.getHours();  // auto fill hour to be current time.
-    document.getElementById("mins1").value = now.getMinutes();  // auto fill hour to be current time.
+    document.getElementById("mins1").value = now.getMinutes() + 1;  // auto fill hour to be current time.
 }
 
 //clear and recreate time form
@@ -188,15 +188,28 @@ function saveMessage() {
         return;
     }
     console.log(dayArray);
-    time = [];
-    for (i = 1; i <= formCounted; i++) {
-        hours = document.getElementById("hours" + String(i));
-        mins = document.getElementById("mins" + String(i));
-        time.push([hours, mins]);
+
+    if (!checkValidTime()) {  // check time
+        return;
     }
-    console.log(time);
+    hours = document.getElementById("hours" + String(i));
+    mins = document.getElementById("mins" + String(i));
 }
 
+// check if time in message box is valid (not in the pass)
+function checkValidTime() {
+    now = new Date(Date.now());  // time now
+    hours = document.getElementById("hours1").value;
+    mins = document.getElementById("mins1").value;
+    set_time = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, mins);
+    if (set_time.getTime() < now.getTime()) {
+        document.getElementById("hours1").value = now.getHours();
+        document.getElementById("mins1").value = now.getMinutes();
+        window.alert("you cannot set message in the pass!!");
+        return false;
+    }
+    return true;
+}
 
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
