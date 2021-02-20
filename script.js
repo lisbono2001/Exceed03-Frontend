@@ -196,6 +196,11 @@ function saveMessage() {
     if (!checkValidTime()) {  // check time
         return;
     }
+
+    if (dayArray.length == 0) {
+        window.alert("please select day to send message!!");
+        return;
+    }
     hours = document.getElementById("hours1");
     mins = document.getElementById("mins1");
 }
@@ -209,7 +214,7 @@ function checkValidTime() {
     if (set_time.getTime() < now.getTime()) {
         document.getElementById("hours1").value = now.getHours();
         document.getElementById("mins1").value = now.getMinutes();
-        window.alert("you cannot set message in the pass!!");
+        window.alert("you cannot send message to the pass!!");
         return false;
     }
     return true;
