@@ -43,21 +43,6 @@ function updatePatientMessageLog() {
     });
 }
 
-// function setPatientInfo(patientID, name, age, address) {
-//     // patient = document.getElementById('patient'+patientID)
-//     var patient = document.querySelector('#patient'+patientID);
-//     if (status==="normal") {
-//         patient.querySelector("#status-light").style.backgroundColor = "green";
-//     }
-//     else if (status==="idle") {
-//         patient.querySelector("#status-light").style.backgroundColor = "orange";
-//     }
-//     else if (status==="danger") {
-//         patient.querySelector("#status-light").style.backgroundColor = "red";
-//         alertScreen(patient.id);
-//     }
-// }
-
 //loop update status from first to last patient
 function setPatientStatus(patientID, status, lastTimestamp) {
     var patient = document.querySelector('#patient'+patientID);
@@ -198,7 +183,7 @@ function sentMessage() {
     document.getElementById("message").value = '';
     console.log(message);
 
-    url = "http://158.108.182.3:3000/new_msg?user_id=1"  // change user id.
+    url = "http://158.108.182.3:3000/new_msg?user_id="+currentPatientID;  // change user id.
 
     fetch(url, {
         method: "POST",
@@ -232,7 +217,7 @@ function saveMessage() {
     hours = parseInt(document.getElementById("hours").value);
     mins = parseInt(document.getElementById("mins").value);
 
-    url = "http://158.108.182.3:3000/create_schedule?user_id=1"  // change user id.
+    url = "http://158.108.182.3:3000/create_schedule?user_id=" + currentPatientID;  // change user id.
     var day_schedule = [];
     for (i=0; i<dayArray.length; i++) {
         day_schedule.push(days_full[dayArray[i]]);
@@ -290,7 +275,7 @@ function formatTime() {
 
 
 function showSchedule() {
-    const url = "http://158.108.182.3:3000/msg?user_id=1";
+    const url = "http://158.108.182.3:3000/msg?user_id="+currentPatientID;
 
     // console.log(sch_list.length);
 
@@ -307,7 +292,7 @@ function showSchedule() {
         //if number of patient in the page and json file doesn't match
         // console.log(json.result)
         for (const message in json.result) {
-            data = json.result[message];
+            var data = json.result[message];
             if (data.type == "schedule") {
                 var sch = document.createElement("li");
                 const event = new Date(2000, 1, 1, data.hour, data.minute);
@@ -322,20 +307,22 @@ function showSchedule() {
                 var remove_btn = document.createElement("button");
                 remove_btn.className = "remove-btn";
                 remove_btn.innerHTML = "remove";
-                remove_btn.onclick = function() {
-                    fetch("http://158.108.182.3:3000/delete_schedule?msg_id="+data.msg_id, {
-                        method: "DELETE"
-                    });
-                    $('#schedule').modal("hide");
-                };
+                remove_btn.value = data.msg_id;
+                remove_btn.addEventListener("click",removeSchedule);
                 sch.appendChild(remove_btn);
-
                 all_schedules.appendChild(sch);
             }
         }
     });
     historyList.appendChild(all_schedules)
     $('#schedule').modal("show");
+}
+
+function removeSchedule() {
+    fetch("http://158.108.182.3:3000/delete_schedule?msg_id="+this.value, {
+        method: "DELETE"
+    });
+    $('#schedule').modal("hide");
 }
 
 function showPatientList() {

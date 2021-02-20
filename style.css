@@ -223,6 +223,7 @@ body {
     width: 7vw;
     border-radius: 5px;
     overflow: hidden;
+}
 
 .patient {
     background-color: gainsboro;
