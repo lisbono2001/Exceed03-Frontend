@@ -226,8 +226,24 @@ function checkValidTime() {
     return true;
 }
 
+function formatTime() {
+    hours = document.getElementById("hours").value;
+    mins = document.getElementById("mins").value;
+    while (mins >= 60) {
+        mins -= 60;
+        hours += 1;
+    }
+    if (hours > 24) {
+        hours = 24;
+    }
+    document.getElementById("hours").value = hours;
+    document.getElementById("mins").value = mins;
+}
+
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
 document.getElementById("set-time").addEventListener("click", setTime);
+
+document.getElementById("mins").addEventListener("change", formatTime);
 
 // setInterval(()=> update(),1000);
