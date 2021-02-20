@@ -11,6 +11,7 @@ function update() {
         console.log(json);
             //addPatients(name, age, address);
             //updateStatus(name,status);
+            console.error("ok");
     })
     .catch((error) => {
         console.error(error);
@@ -59,6 +60,19 @@ function updateStatus(name,status) {
     }
 }
 
+
+function checkEmpty(){
+    var value = document.getElementById('message').value;
+    if (value.length > 0) {
+        document.getElementById('submit-message').disabled = false; 
+        document.getElementById('set-time').disabled = false; 
+    } 
+    else { 
+        document.getElementById('submit-message').disabled = true;
+        document.getElementById('set-time').disabled = true; 
+    }
+}
+
 //change specific patient background color to danger color
 function alertScreen(patientid) {
     window.setInterval(()=>{
@@ -85,12 +99,11 @@ function setTime() {
     for (var i=0; i < dayArray.length; i++) {
         document.getElementById(dayArray[i]).style.backgroundColor = "gainsboro";
     }
-    dayArray = [];
     initForm();
 
     now = new Date(Date.now());  // time now
-    document.getElementById("hours1").value = now.getHours();  // auto fill hour to be current time.
-    document.getElementById("mins1").value = now.getMinutes() + 1;  // auto fill hour to be current time.
+    document.getElementById("hours").value = now.getHours();  // auto fill hour to be current time.
+    document.getElementById("mins").value = now.getMinutes() + 1;  // auto fill hour to be current time.
 
     var dayName = days[now.getDay()];
     selectDay(dayName);
@@ -98,46 +111,36 @@ function setTime() {
 
 //clear and recreate time form
 function initForm() {
-    formCounted = 0;
     var container = document.getElementById("form-group");
-    //clear until empty
-    while (container.hasChildNodes()) {
+    //clear until left only form starter template
+    while (formCounted > 1) {
         container.removeChild(container.lastChild);
+        formCounted--;
     }
-    addForm();
 }
 
 ////decrease number of time form in set time
 function reduceForm() {
+    var container = document.querySelector('#form-group');
     if (formCounted > 1) {
+        container.removeChild(container.lastElementChild);
         formCounted--;
-        var container = document.getElementById("form-group");
-        container.removeChild(container.lastChild);
-        container.removeChild(container.lastChild);
     }
     else;
 }
 
 //increase number of time form in set time
 function addForm() {
-    formCounted++;
-    var container = document.getElementById("form-group");
+    //given maximun form === 5
+    if (formCounted < 5) {
+        formCounted++;
+        var form = document.querySelector('#form-group').lastElementChild;
+        var clone = form.cloneNode(true);
 
-    var input = document.createElement("input");
-    input.type = "number";
-    input.className = "form-control" + "time";
-    input.min = "0";
-    input.id = "hours"+formCounted;
-    input.placeholder = "Hours (24)";
-    container.appendChild(input);
-
-    var input = document.createElement("input");
-    input.type = "number";
-    input.className = "form-control" + "time";
-    input.min = "0";
-    input.id = "mins"+formCounted;
-    input.placeholder = "Mins";
-    container.appendChild(input);
+        clone.id = 'form'+formCounted;
+        form.after(clone);
+    }
+    else;
 }
 
 //add clicked day to day Array and re-color the clicked button.
@@ -201,19 +204,19 @@ function saveMessage() {
         window.alert("please select day to send message!!");
         return;
     }
-    hours = document.getElementById("hours1");
-    mins = document.getElementById("mins1");
+    hours = document.getElementById("hours");
+    mins = document.getElementById("mins");
 }
 
 // check if time in message box is valid (not in the pass)
 function checkValidTime() {
     now = new Date(Date.now());  // time now
-    hours = document.getElementById("hours1").value;
-    mins = document.getElementById("mins1").value;
+    hours = document.getElementById("hours").value;
+    mins = document.getElementById("mins").value;
     set_time = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, mins);
     if (set_time.getTime() < now.getTime()) {
-        document.getElementById("hours1").value = now.getHours();
-        document.getElementById("mins1").value = now.getMinutes();
+        document.getElementById("hours").value = now.getHours();
+        document.getElementById("mins").value = now.getMinutes() + 1;
         window.alert("you cannot send message to the pass!!");
         return false;
     }
