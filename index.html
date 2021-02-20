@@ -22,14 +22,14 @@
                         </div>
                     </div>
                     <div class="col-md" id="patient-info">
-                        <p class="name"> Name: -</p>
-                        <p class="age">Age: -</p>
-                        <p class="address"> Address: -</p>
+                        <p> Name: <span class="name" id="name">-</span></p>
+                        <p>Age: <span class="age" id="age">-</span></p>
+                        <p> Address: <span class="address" id="address">-</span></p>
                     </div>
                     <div class="col-md" id="sentText">
                         <form class="center" action="" id="formText">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="message" placeholder="TEXT" onkeyup="checkEmpty()">
+                                <input type="text" class="form-control" id="message" placeholder="TEXT">
                             </div>
                             <div class="row justify-content-center">
                                 <div class="col-md" id="colbut">
@@ -68,20 +68,20 @@
 
                     <div class="row justify-content-center" id="error-message">Wrong time input</div>
                     <div class="row justify-content-center">
-                        <button class="day" id="Sun" onclick="selectDay(value)" value="Sun">Sun</button>
-                        <button class="day" id="Mon" onclick="selectDay(value)" value="Mon">Mon</button>
-                        <button class="day" id="Tue" onclick="selectDay(value)" value="Tue">Tue</button>
-                        <button class="day" id="Wed" onclick="selectDay(value)" value="Wed">Wed</button>
-                        <button class="day" id="Thu" onclick="selectDay(value)" value="Thu">Thu</button>
-                        <button class="day" id="Fri" onclick="selectDay(value)" value="Fri">Fri</button>
-                        <button class="day" id="Sat" onclick="selectDay(value)" value="Sat">Sat</button>
+                        <button class="day" id="Sun" value="Sun">Sun</button>
+                        <button class="day" id="Mon" value="Mon">Mon</button>
+                        <button class="day" id="Tue" value="Tue">Tue</button>
+                        <button class="day" id="Wed" value="Wed">Wed</button>
+                        <button class="day" id="Thu" value="Thu">Thu</button>
+                        <button class="day" id="Fri" value="Fri">Fri</button>
+                        <button class="day" id="Sat" value="Sat">Sat</button>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-md" id="colbut">
                             <button type="button" class="btn btn-success" id="save-time" data-toggle="" data-target="#popup">Save</button>
                         </div>
                         <div class="col-md" id="colbut">
-                            <button type="submit" class="btn btn-secondary" data-dismiss="modal" id="submit-message">Close</button>
+                            <button type="submit" class="btn btn-secondary" data-dismiss="modal" id="close-popup">Close</button>
                         </div>
                     </div>
                 </div>

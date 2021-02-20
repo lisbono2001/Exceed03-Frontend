@@ -1,74 +1,118 @@
+//assume that patient id is sorted
+function updatePatientNumber() {
 // const { strict } = require("assert");
 // const { time } = require("console");
-
-function update() {
-    const fetch = require("node-fetch");
     fetch("#")
     .then((response) => {
         return response.json();
     })
     .then((json) => {
-        console.log(json);
-            //addPatients(name, age, address);
-            //updateStatus(name,status);
-            console.error("ok");
+        //if number of patient in the page and json file doesn't match
+        if (json.length > currentPatientCount) {
+            for (var i=currentPatientCount+1; i<=json.length ; i++) {
+                addPatientField(json[i]['name'],json[i]['age'],json[i]['address']);
+            }
+        }
     })
     .catch((error) => {
         console.error(error);
     });
 }
 
-var patientCount = 0
+//update each patient status
+function updatePatientStatus() {
+    fetch("#")
+    .then((response) => {
+        return response.json();
+    })
+    .then((json) => {
+        for (var i=1; i<=currentPatientCount ; i++) {
+            setPatientStatus(json[i]['user_id'],json[i]['status'],json[i]['last_update_timestamp']);
+        }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+}
+
+// use when called
+function updatePatientMessageLog() {
+    fetch("#")
+    .then((response) => {
+        return response.json();
+    })
+    .then((json) => {
+        // update message on popup
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+}
+
+var currentPatientCount = 0
 
 //add patients
-function addPatients(name, age, address) {
-    patientCount++;
+function addPatientField(name, age, address) {
+    currentPatientCount++;
     var patient = document.querySelector('#main-content').lastElementChild;
     //for first patient (use template)
-    if (patientCount===1) {
-        patient.id = 'patient'+patientCount;
-        patient.getElementsByClassName("name")[0].textContent = "Name: " + name;
-        patient.getElementsByClassName("age")[0].textContent = "Age: " + age;
-        patient.getElementsByClassName("address")[0].textContent = "Address: " + address;
+    if (currentPatientCount===1) {
+        patient.id = 'patient'+currentPatientCount;
+        patient.querySelector('#name').innerHTML = name;
+        patient.querySelector('#age').innerHTML = age;
+        patient.querySelector('#address').innerHTML = address;
     }
     else {
-        patientCount++;
+        currentPatientCount++;
         var clone = patient.cloneNode(true);
-        clone.id = 'patient'+patientCount;
-        clone.getElementsByClassName("name")[0].textContent = "Name: " + name;
-        clone.getElementsByClassName("age")[0].textContent = "Age: " + age;
-        clone.getElementsByClassName("address")[0].textContent = "Address: " + address;
+        clone.id = 'patient'+currentPatientCount;
+        clone.querySelector('#name').innerHTML = name;
+        clone.querySelector('#age').innerHTML = age;
+        clone.querySelector('#address').innerHTML = address;
+        clone.querySelector('#message').value = "";
         patient.after(clone);
     }
 }
 
-//loop update status from first to last patient
-function updateStatus(name,status) {
-    for (var i=1; i<=patientCount; i++) {
-        var patient = document.querySelector('#patient'+patientCount);
-        patient.getElementsByClassName("name")[0].textContent === name;
-            if (status==="online") {
-                patient.getElementsByClassName("status-ligjht")[0].style.backgroundColor = "green";
-            }
-            else if (status==="idle") {
-                patient.getElementsByClassName("status-ligjht")[0].style.backgroundColor = "orange";
-            }
-            else if (status==="danger") {
-                patient.getElementsByClassName("status-ligjht")[0].style.backgroundColor = "red";
-                alertScreen(patient.id)
-            }
+function setPatientInfo(patientID, name, age, address) {
+    // patient = document.getElementById('patient'+patientID)
+    var patient = document.querySelector('#patient'+patientID);
+    if (status==="normal") {
+        patient.querySelector("#status-light").style.backgroundColor = "green";
+    }
+    else if (status==="idle") {
+        patient.querySelector("#status-light").style.backgroundColor = "orange";
+    }
+    else if (status==="danger") {
+        patient.querySelector("#status-light").style.backgroundColor = "red";
+        alertScreen(patient.id);
     }
 }
 
+//loop update status from first to last patient
+function setPatientStatus(patientID, status, lastTimestamp) {
+    var patient = document.querySelector('#patient'+patientID);
+    if (status==="normal") {
+        patient.querySelector("#status-light").style.backgroundColor = "green";
+    }
+    else if (status==="idle") {
+        patient.querySelector("#status-light").style.backgroundColor = "orange";
+    }
+    else if (status==="danger") {
+        patient.querySelector("#status-light").style.backgroundColor = "red";
+        alertScreen(patient.id);
+    }
+}
 
-function checkEmpty(){
+//if text messsage is empty, disable send and settime button
+function checkEmptyMessage(){
     var value = document.getElementById('message').value;
     if (value.length > 0) {
-        document.getElementById('submit-message').disabled = false; 
+        document.getElementById('sent-message').disabled = false; 
         document.getElementById('set-time').disabled = false; 
     } 
     else { 
-        document.getElementById('submit-message').disabled = true;
+        document.getElementById('sent-message').disabled = true;
         document.getElementById('set-time').disabled = true; 
     }
 }
@@ -76,10 +120,10 @@ function checkEmpty(){
 //change specific patient background color to danger color
 function alertScreen(patientid) {
     window.setInterval(()=>{
-        if (document.getElementById("patientid").style.backgroundColor === "blue")
-            document.getElementById("patientid").style.backgroundColor = "red";
+        if (document.getElementById(patientid).style.backgroundColor === "blue")
+            document.getElementById(patientid).style.backgroundColor = "red";
         else
-            document.getElementById("patientid").style.backgroundColor = "blue";
+            document.getElementById(patientid).style.backgroundColor = "blue";
     },3000);
 }
 
@@ -110,7 +154,7 @@ function setTime() {
 }
 
 //clear and recreate time form
-function initForm() {
+function initSetTimeForm() {
     var container = document.getElementById("form-group");
     //clear until left only form starter template
     while (formCounted > 1) {
@@ -119,8 +163,8 @@ function initForm() {
     }
 }
 
-////decrease number of time form in set time
-function reduceForm() {
+//decrease number of time form in set time
+function reduceSetTimeForm() {
     var container = document.querySelector('#form-group');
     if (formCounted > 1) {
         container.removeChild(container.lastElementChild);
@@ -130,7 +174,7 @@ function reduceForm() {
 }
 
 //increase number of time form in set time
-function addForm() {
+function addSetTimeForm() {
     //given maximun form === 5
     if (formCounted < 5) {
         formCounted++;
@@ -144,15 +188,14 @@ function addForm() {
 }
 
 //add clicked day to day Array and re-color the clicked button.
-function selectDay(day) {
-    if (!dayArray.includes(day)) {
-        dayArray.push(day);
-        document.getElementById(day).style.backgroundColor = "lightcoral";
+function selectDay() {
+    if (!dayArray.includes(this.value)) {
+        dayArray.push(this.value);
+        this.style.backgroundColor = "lightcoral";
     }
     else {
-        i = dayArray.indexOf(day);
-        dayArray.splice(i,1);
-        document.getElementById(day).style.backgroundColor = "gainsboro";
+        dayArray.splice(dayArray.indexOf(this.value),1);
+        this.style.backgroundColor = "gainsboro";
     }
 }
 
@@ -226,8 +269,19 @@ function checkValidTime() {
     return true;
 }
 
+//EventListeners
+
+document.getElementById("message").addEventListener("keyup", checkEmptyMessage);
+document.getElementById("set-time").addEventListener("click", setTime);
+document.getElementById("set-time").addEventListener("click", initSetTimeForm);
+document.getElementById("reduce-form").addEventListener("click", reduceSetTimeForm);
+document.getElementById("add-form").addEventListener("click", addSetTimeForm);
+Array.from(document.getElementsByClassName('day')).forEach(function(element){
+  element.addEventListener("click", selectDay);
+});
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
 document.getElementById("set-time").addEventListener("click", setTime);
 
-// setInterval(()=> update(),1000);
+// setInterval(()=> updatePatientNumber(),5000);
+// setInterval(()=> updatePatientStatus(),1000);
