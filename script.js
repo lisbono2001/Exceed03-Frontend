@@ -71,6 +71,7 @@ function alertScreen(patientid) {
 
 var dayArray = [];
 var formCounted = 1;
+var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 //clear data from dayArray and re-color day buttons.
 function setTime() {
@@ -90,6 +91,9 @@ function setTime() {
     now = new Date(Date.now());  // time now
     document.getElementById("hours1").value = now.getHours();  // auto fill hour to be current time.
     document.getElementById("mins1").value = now.getMinutes() + 1;  // auto fill hour to be current time.
+
+    var dayName = days[now.getDay()];
+    selectDay(dayName);
 }
 
 //clear and recreate time form
@@ -192,8 +196,8 @@ function saveMessage() {
     if (!checkValidTime()) {  // check time
         return;
     }
-    hours = document.getElementById("hours" + String(i));
-    mins = document.getElementById("mins" + String(i));
+    hours = document.getElementById("hours1");
+    mins = document.getElementById("mins1");
 }
 
 // check if time in message box is valid (not in the pass)
