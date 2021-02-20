@@ -1,3 +1,6 @@
+// const { strict } = require("assert");
+// const { time } = require("console");
+
 function update() {
     const fetch = require("node-fetch");
     fetch("#")
@@ -72,15 +75,21 @@ var formCounted = 1;
 //clear data from dayArray and re-color day buttons.
 function setTime() {
     var message = document.getElementById("message").value;
-    if (message!="")
-        document.getElementById("modal-title").innerHTML = "Message: " + message;
-    else
-        document.getElementById("modal-title").innerHTML = "Type something first";
-    for (var i=0; i<dayArray.length; i++) {
+    if (message.trim() == "") {  // if no any message are in text box just popup error.
+        window.alert("please type something!!");
+        $('#popup').modal("hide");
+        return;
+    }
+    $('#popup').modal("show");  // show modal.
+    for (var i=0; i < dayArray.length; i++) {
         document.getElementById(dayArray[i]).style.backgroundColor = "gainsboro";
     }
     dayArray = [];
     initForm();
+
+    now = new Date(Date.now());  // time now
+    document.getElementById("hours1").value = now.getHours();  // auto fill hour to be current time.
+    document.getElementById("mins1").value = now.getMinutes();  // auto fill hour to be current time.
 }
 
 //clear and recreate time form
@@ -162,17 +171,35 @@ function inset(jsonData) {
 //sent message to patient
 function sentMessage() {
     message = document.getElementById("message").value;
+    if (message.trim() == "") {
+        window.alert("please type something!!");
+        return;
+    }
+    document.getElementById("message").value = "";
     console.log(message);
 }
 
 //save message day(s) and time(s) from form
 function saveMessage() {
-    console.log("Save the day!!")
+    message = document.getElementById("message").value;
+    if (message.trim() == "") {
+        $('#popup').modal("hide");
+        window.alert("please type something!!");
+        return;
+    }
     console.log(dayArray);
+    time = [];
+    for (i = 1; i <= formCounted; i++) {
+        hours = document.getElementById("hours" + String(i));
+        mins = document.getElementById("mins" + String(i));
+        time.push([hours, mins]);
+    }
+    console.log(time);
 }
 
 
 document.getElementById("sent-message").addEventListener("click", sentMessage);
 document.getElementById("save-time").addEventListener("click", saveMessage);
+document.getElementById("set-time").addEventListener("click", setTime);
 
 // setInterval(()=> update(),1000);
