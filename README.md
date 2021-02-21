@@ -19,16 +19,16 @@ see [how to use.](#how-to-use-cabp)
 ## How to use CABP
 ### Patient
 - CABP is support multiple patient, you can switch between patient by use patient tab at the right side of the screen.  
-![alt text](https://postimg.cc/SXVWnLdD)
+![alt text](https://github.com/lisbono2001/Exceed03-Frontend/blob/main/static/Patient_tab.png?raw=true)
 - choose patient to see more detail.  
-![alt text](https://postimg.cc/JtSjHz3V)
+![alt text](https://github.com/lisbono2001/Exceed03-Frontend/blob/main/static/Patient_select.png?raw=true)
 
 ### Message
 - you can sent message to current patient by typing in TEXT box and click sent(*note that character limit is 32*).  
 - you can also set date and time to sent this message automaticaly.  
-![alt text](https://postimg.cc/njjCnqPs)  
+![alt text](https://github.com/lisbono2001/Exceed03-Frontend/blob/main/static/textbox.png?raw=true)  
   
 - see all current schedule by clicking at schedule tab.  
-![alt text](https://postimg.cc/bsHdYy3R)  
+![alt text](https://github.com/lisbono2001/Exceed03-Frontend/blob/main/static/Schedule_tab.png?raw=true)  
 - remove each scedule by clicking at remove button of that scedule.  
-![alt text](https://postimg.cc/cvxCrpzG)  
+![alt text](https://github.com/lisbono2001/Exceed03-Frontend/blob/main/static/Schedule_info.png?raw=true)  
