@@ -3,14 +3,14 @@
 
 ## What is CAMP?
 **CABP** is Covid Alert Button for Patient Monitor use for monitoring Covid-19 patients especially elderly person.<br>
-It can chech and notify the monitorer whenever patient is in danger ex. falling, gas leak.<br>
+It can check and notify the monitorer whenever patient is in danger ex. falling, gas leak.<br>
 It can send message directly to patient.<br>
 And also can set schedule for some activities like, have a medicine at 11:00 pm Sunday and Monday, It will send the message to patient when the time come.  
 see [how to use.](#how-to-use-cabp)
 
 ---
 ## Features
-- see infotion and *realtime status* of multiple [patient](#patient).
+- see information and *realtime status* of multiple [patient](#patient).
 - sent live short [message](#message) to the device.
 - set [schedule](#message) to automaticaly sent message to the device at specific date and time.
 - see message date and time of all assigned schedule.
@@ -27,7 +27,7 @@ see [how to use.](#how-to-use-cabp)
 
 ### Message
 - you can sent message to current patient by typing in TEXT box and click sent(*note that character limit is 32*).  
-- you can also set date and time to sent this message automaticaly.  
+- you can also set date and time to sent this message automatically.  
 ![alt text](https://github.com/lisbono2001/Exceed03-Frontend/blob/main/static/textbox.png?raw=true)  
   
 - see all current schedule by clicking at schedule tab.  
