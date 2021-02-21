@@ -30,7 +30,8 @@
                     <div class="col-md bg-dark" id="patient-status">
                         <div class="center">
                             <img id="profile-pic" src="static/template.png" alt="">
-                            <h2> status <span id="status-light"></span></h2>
+                            <h2> status <span id="status-light"></span> </h2>
+                            <button type="button" class="btn btn-success" id="set-safe" disabled="true" onclick="safe()">Safe</button>
                         </div>
                     </div>
                     <div class="col-md" id="patient-info">
@@ -52,6 +53,7 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
                     </div>
                     <div class="container-fluid">
                         <canvas id="myChart"></canvas>

@@ -295,6 +295,9 @@ function updatePatientInfo() {
     patient.querySelector('#age').innerHTML = patientdata[patient_id]["age"];
     patient.querySelector('#address').innerHTML = patientdata[patient_id]["address"];
 
+    // safe_btn.style.display = '';
+    safe_btn.disabled = true;
+    safe_btn.style.opacity = '0.3';
     let status = patientdata[patient_id]["status"];
     if (status==="normal") {
         patient.querySelector("#status-light").style.backgroundColor = "green";
@@ -304,7 +307,10 @@ function updatePatientInfo() {
     }
     else if (status==="danger") {
         patient.querySelector("#status-light").style.backgroundColor = "red";
+        safe_btn.disabled = false;
+        safe_btn.style.opacity = '';
     }
+
     var checkdanger = false;
     json["result"].forEach(patientdata => {
         if (patientdata['status']==="danger") {
@@ -319,6 +325,45 @@ function updatePatientInfo() {
     })
     .catch((error) => {
         console.error(error);
+    });
+}
+
+// =======================
+//        new update
+// =======================
+const safe_btn = document.getElementById('set-safe');
+function safe() {
+    fetch(`http://158.108.182.3:3000/update_status?user_id=${currentPatientID}`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            status: "normal"
+        })
+    }).then((response) => console.log(response))
+    .then((result) => {
+        console.log(result);
+        safe_btn.disabled = false;
+        safe_btn.style.opacity = '0.3';
+    });
+}
+
+var temp_msg = localStorage.getItem('temp_msg');
+function liveResoponse() {
+    const url = "http://158.108.182.3:3000/response?user_id="+currentPatientID;
+    fetch(url, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+    }).then((response) => {
+        return response.json();
+    }).then(({message, response, sent}) => {
+        if (!sent || response == null)
+            return;
+        const u_msg = message + response;
+        if (temp_msg != u_msg) {
+            alert(`Send: ${message}\nReply : ${response ? 'Yes.' : 'No.'}`)
+            localStorage.setItem('temp_msg', u_msg);
+            temp_msg = u_msg;
+        }
     });
 }
 
@@ -341,4 +386,5 @@ document.getElementById("hours").addEventListener("change", formatTime);
 document.getElementById("mins").addEventListener("change", formatTime);
 
 setInterval(()=> updatePatientInfo(),1000);
+setInterval(()=> liveResoponse(),1000);
 // setInterval(()=> updatePatientStatus(),1000);
