@@ -220,3 +220,9 @@ body {
 .patient:hover {
     transform: scale(1.1);
 }
+
+#footer {
+    bottom: 0; 
+    width: 100%;
+    font-size: 1.5rem;
+}
